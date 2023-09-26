@@ -80,9 +80,14 @@ public class HeroController {
     @GetMapping("")
     public ResponseEntity<Hero[]> getHeroes() {
         LOG.info("GET /heroes");
-
-        // Replace below with your implementation
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Hero[] heros = heroDao.getHeroes();
+            return new ResponseEntity<Hero[]>(heros,HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -101,9 +106,14 @@ public class HeroController {
     @GetMapping("/")
     public ResponseEntity<Hero[]> searchHeroes(@RequestParam String name) {
         LOG.info("GET /heroes/?name="+name);
-
-        // Replace below with your implementation
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Hero[] heros = heroDao.findHeroes(name);
+            return new ResponseEntity<Hero[]>(heros,HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -118,9 +128,14 @@ public class HeroController {
     @PostMapping("")
     public ResponseEntity<Hero> createHero(@RequestBody Hero hero) {
         LOG.info("POST /heroes " + hero);
-
-        // Replace below with your implementation
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Hero newHero = heroDao.createHero(hero);
+            return new ResponseEntity<Hero>(newHero,HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -135,9 +150,14 @@ public class HeroController {
     @PutMapping("")
     public ResponseEntity<Hero> updateHero(@RequestBody Hero hero) {
         LOG.info("PUT /heroes " + hero);
-
-        // Replace below with your implementation
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            Hero updatedHero = heroDao.updateHero(hero);
+            return new ResponseEntity<Hero>(updatedHero,HttpStatus.OK);
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -152,8 +172,18 @@ public class HeroController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Hero> deleteHero(@PathVariable int id) {
         LOG.info("DELETE /heroes/" + id);
-
-        // Replace below with your implementation
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        try {
+            boolean deleted = heroDao.deleteHero(id);
+            if (deleted) {
+                return new ResponseEntity<Hero>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Hero>(HttpStatus.NOT_FOUND);
+            }
+            
+        }
+        catch(IOException e) {
+            LOG.log(Level.SEVERE,e.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
