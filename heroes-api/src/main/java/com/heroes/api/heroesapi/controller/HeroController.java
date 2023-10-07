@@ -130,7 +130,7 @@ public class HeroController {
         LOG.info("POST /heroes " + hero);
         try {
             Hero newHero = heroDao.createHero(hero);
-            return new ResponseEntity<Hero>(newHero,HttpStatus.OK);
+            return new ResponseEntity<Hero>(newHero,HttpStatus.CREATED);
         }
         catch(IOException e) {
             LOG.log(Level.SEVERE,e.getLocalizedMessage());
